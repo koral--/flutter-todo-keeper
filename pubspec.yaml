@@ -1,15 +1,17 @@
-name: appname
-description: App description
+name: todo_keeper
+description: Sample project for Flutter state restoration
 publish_to: 'none'
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.18.2 <3.0.0"
+  flutter: 3.3.4
 
 dependencies:
   flutter:
     sdk: flutter
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1
