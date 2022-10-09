@@ -10,9 +10,38 @@ class AddItemPage extends StatefulWidget {
   State<AddItemPage> createState() => _AddItemPageState();
 }
 
-class _AddItemPageState extends State<AddItemPage> {
-  final _controller = TextEditingController();
-  DateTime dueDate = DateTime.now();
+class _AddItemPageState extends State<AddItemPage> with RestorationMixin {
+  final _controller = RestorableTextEditingController();
+  final _dueDate = RestorableDateTime(DateTime.now());
+
+  static Route<DateTime> _datePickerRoute(
+    BuildContext context,
+    Object? arguments,
+  ) =>
+      DialogRoute<DateTime>(
+        context: context,
+        builder: (context) => DatePickerDialog(
+          restorationId: 'date_picker_dialog',
+          initialEntryMode: DatePickerEntryMode.calendarOnly,
+          initialDate: DateTime.fromMillisecondsSinceEpoch(arguments! as int),
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2243),
+        ),
+      );
+
+  late final RestorableRouteFuture<DateTime?> _restorableDatePickerRouteFuture =
+      RestorableRouteFuture<DateTime?>(
+    onComplete: (newDate) {
+      if (newDate != null) {
+        setState(() => _dueDate.value = newDate);
+      }
+    },
+    onPresent: (NavigatorState navigator, Object? arguments) =>
+        navigator.restorablePush(
+      _datePickerRoute,
+      arguments: _dueDate.value.millisecondsSinceEpoch,
+    ),
+  );
 
   @override
   Widget build(BuildContext context) => AlertDialog(
@@ -23,7 +52,7 @@ class _AddItemPageState extends State<AddItemPage> {
         children: [
           TextField(
             onSubmitted: (_) => _onItemConfirmed(context),
-            controller: _controller,
+            controller: _controller.value,
             decoration: const InputDecoration(hintText: 'Title'),
           ),
           const SizedBox(height: 16.0),
@@ -31,9 +60,9 @@ class _AddItemPageState extends State<AddItemPage> {
           InkWell(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(DateFormat.yMd().format(dueDate)),
+              child: Text(DateFormat.yMd().format(_dueDate.value)),
             ),
-            onTap: () => _onDateTap(context),
+            onTap: () => _restorableDatePickerRouteFuture.present(),
           ),
           const SizedBox(height: 16.0),
           OutlinedButton(
@@ -43,28 +72,28 @@ class _AddItemPageState extends State<AddItemPage> {
         ],
       ));
 
-  void _onItemConfirmed(BuildContext context) {
-    Navigator.of(context).pop(ToDoItem(
-      _controller.text,
-      dueDate,
-    ));
-  }
-
-  Future<void> _onDateTap(BuildContext context) async {
-    final newDate = await showDatePicker(
-      context: context,
-      initialDate: dueDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2040),
-    );
-    if (newDate != null) {
-      setState(() => dueDate = newDate);
-    }
-  }
+  void _onItemConfirmed(BuildContext context) =>
+      Navigator.of(context).pop(ToDoItem(
+        _controller.value.text,
+        _dueDate.value,
+      ));
 
   @override
   void dispose() {
     _controller.dispose();
+    _dueDate.dispose();
+    _restorableDatePickerRouteFuture.dispose();
     super.dispose();
+  }
+
+  @override
+  String? get restorationId => 'add_item_page';
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_controller, 'title');
+    registerForRestoration(_dueDate, 'due_date');
+    registerForRestoration(
+        _restorableDatePickerRouteFuture, 'date_picker_route_future');
   }
 }

@@ -9,10 +9,11 @@ class ToDoKeeperApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-      title: 'ToDo Keeper',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomePage(),
-    );
+        restorationScopeId: 'app',
+        title: 'ToDo Keeper',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const HomePage(),
+      );
 }
