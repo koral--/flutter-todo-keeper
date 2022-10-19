@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //TODO make list restorable
   final List<ToDoItem> _toDos = [];
 
   @override
@@ -50,6 +51,7 @@ class _HomePageState extends State<HomePage> {
       .toList(growable: false);
 
   Future<void> _showAddItemDialog() async {
+    //TODO make route restorable
     final item = await showDialog<ToDoItem>(
         context: context, builder: (context) => const AddItemPage());
 

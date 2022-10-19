@@ -11,7 +11,9 @@ class AddItemPage extends StatefulWidget {
 }
 
 class _AddItemPageState extends State<AddItemPage> {
+  //TODO make controller restorable
   final _controller = TextEditingController();
+  //TODO make date restorable
   DateTime dueDate = DateTime.now();
 
   @override
@@ -51,6 +53,7 @@ class _AddItemPageState extends State<AddItemPage> {
   }
 
   Future<void> _onDateTap(BuildContext context) async {
+    //TODO make route and picker state restorable
     final newDate = await showDatePicker(
       context: context,
       initialDate: dueDate,
