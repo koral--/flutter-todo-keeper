@@ -85,11 +85,11 @@ class _HomePageState extends State<HomePage> with RestorationMixin {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: _toDos.value.isEmpty
-              ? const [Text('You have no ToDos')]
-              : _buildToDoList(),
-        ),
+                  ? const [Text('You have no ToDos')]
+                  : _buildToDoList(),
+            ),
       ),
     ),
     floatingActionButton: FloatingActionButton(
