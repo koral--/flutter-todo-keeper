@@ -88,11 +88,11 @@ class _AddItemPageState extends State<AddItemPage> with RestorationMixin {
           const SizedBox(height: 16.0),
           const Text('Date:'),
           InkWell(
+            onTap: _restorableDatePickerRouteFuture.present,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(DateFormat.yMd().format(_dueDate.value)),
             ),
-            onTap: () => _restorableDatePickerRouteFuture.present(),
           ),
           const SizedBox(height: 16.0),
           OutlinedButton(
