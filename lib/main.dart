@@ -38,8 +38,8 @@ class ToDoKeeperApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    //TODO make app restorable
-    title: 'ToDo Keeper',
+    // TODO: replace with restorableScopeId
+        title: 'ToDo Keeper',
     theme: ThemeData(
       primarySwatch: Colors.blue,
     ),

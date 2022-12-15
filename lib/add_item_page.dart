@@ -40,11 +40,12 @@ class AddItemPage extends StatefulWidget {
   State<AddItemPage> createState() => _AddItemPageState();
 }
 
-class _AddItemPageState extends State<AddItemPage> {
-  //TODO make controller restorable
+class _AddItemPageState
+    extends State<AddItemPage> /* TODO: add the RestorationMixin */ {
+  // TODO: replace with restorable controller
   final _controller = TextEditingController();
 
-  //TODO make date restorable
+  // TODO: replace with restorable date
   DateTime dueDate = DateTime.now();
 
   @override
@@ -56,7 +57,7 @@ class _AddItemPageState extends State<AddItemPage> {
         children: [
           TextField(
             onSubmitted: (_) => _onItemConfirmed(context),
-            controller: _controller,
+            controller: _controller, // TODO: replace with value property
             decoration: const InputDecoration(hintText: 'Title'),
           ),
           const SizedBox(height: 16.0),
@@ -64,9 +65,10 @@ class _AddItemPageState extends State<AddItemPage> {
           InkWell(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
+              // TODO: replace with value property
               child: Text(DateFormat.yMd().format(dueDate)),
             ),
-            onTap: () => _onDateTap(context),
+            onTap: () => _onDateTap(context), // TODO: present restorable route
           ),
           const SizedBox(height: 16.0),
           OutlinedButton(
@@ -79,17 +81,17 @@ class _AddItemPageState extends State<AddItemPage> {
   void _onItemConfirmed(BuildContext context) {
     Navigator.of(context).pop(ToDoItem(
       _controller.text,
-      dueDate,
+      dueDate, // TODO: replace with value property
     ));
   }
 
+  // TODO: replace with restorable route
   Future<void> _onDateTap(BuildContext context) async {
-    //TODO make route and picker state restorable
     final newDate = await showDatePicker(
       context: context,
       initialDate: dueDate,
       firstDate: DateTime.now(),
-      lastDate: DateTime(2040),
+      lastDate: DateTime(2243),
     );
     if (newDate != null) {
       setState(() => dueDate = newDate);
@@ -99,6 +101,11 @@ class _AddItemPageState extends State<AddItemPage> {
   @override
   void dispose() {
     _controller.dispose();
+    // TODO: dispose the date
+    // TODO: dispose the route
     super.dispose();
   }
+
+// TODO: implement the RestorationMixin members
+// TODO: register route for restoration
 }
